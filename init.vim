@@ -8,11 +8,15 @@ Plug 'vimlab/neojs'
 
 Plug 'neomake/neomake'
 
+Plug 'eugen0329/vim-esearch'
+
 Plug 'terryma/vim-multiple-cursors'
 
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 
 Plug 'Valloric/YouCompleteMe', { 'do': './install.py --tern-completer' }
+
+Plug 'yegappan/mru',
 
 Plug 'posva/vim-vue'
 
@@ -31,6 +35,9 @@ let mapleader = ","
 let g:mapleader = ","                                                                                     
 let g:ctrlp_custom_ignore = { 'dir': 'build$\|node_modules$' }
 
+" Show line numbers "
+set number
+
 " Spaces & Tabs {{{
 set tabstop=4       " number of visual spaces per TAB
 set softtabstop=4   " number of spaces in tab when editing
@@ -39,3 +46,10 @@ set expandtab       " tabs are space
 set autoindent
 set copyindent      " copy indent from the previous line
 " }}} Spaces & Tabs
+
+
+"F2 Shortcut for Most Recently Used Files
+map <F2> :MRU<CR>
+
+"Control N to focus nerd tree
+map <C-n> :NERDTreeFocus<CR>

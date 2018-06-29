@@ -35,6 +35,9 @@ let mapleader = ","
 let g:mapleader = ","                                                                                     
 let g:ctrlp_custom_ignore = { 'dir': 'build$\|node_modules$' }
 
+" Remove preview window"
+set completeopt-=preview
+
 " Show line numbers "
 set number
 

@@ -28,6 +28,9 @@ autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | exe 'NERDTree' | endif
 
+" no Help at the top of NERD tree"
+let NERDTreeMinimalUI=1
+
 " Let quit work as expected if after entering :q the only window left open is NERD Tree itself
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
@@ -54,5 +57,8 @@ set copyindent      " copy indent from the previous line
 "F2 Shortcut for Most Recently Used Files
 map <F2> :MRU<CR>
 
-"Control N to focus nerd tree
-map <C-n> :NERDTreeFocus<CR>
+"Control O to toggle nerd tree in the buffer's folder
+map <C-o> :NERDTreeToggle %<CR>
+
+"js beautify on ,bb "
+nnoremap <leader>bb :%!js-beautify -j -q -B -f -<CR>

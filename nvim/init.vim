@@ -2,9 +2,11 @@ call plug#begin('~/.local/share/nvim/plugged')
 
 Plug  'ctrlpvim/ctrlp.vim'
 
-Plug 'shougu/unite.vim'
+"Plug 'shougu/unite.vim'
 
-Plug 'vimlab/neojs'
+"Plug 'vimlab/neojs'
+
+Plug 'matze/vim-move'
 
 Plug 'neomake/neomake'
 
@@ -19,6 +21,8 @@ Plug 'Valloric/YouCompleteMe', { 'do': './install.py --tern-completer' }
 Plug 'yegappan/mru',
 
 Plug 'posva/vim-vue'
+
+Plug 'isRuslan/vim-es6'
 
 Plug 'prettier/vim-prettier', {
   \ 'do': 'npm install --global prettier',
@@ -39,9 +43,19 @@ let NERDTreeMinimalUI=1
 " Let quit work as expected if after entering :q the only window left open is NERD Tree itself
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
-let mapleader = ","                                                                                               
-let g:mapleader = ","                                                                                     
+
+"map leader"
+let mapleader = ","                                             
+let g:mapleader = ","                                                                   
+
+" ---- JS part -----
+
+" ignore node modules
 let g:ctrlp_custom_ignore = { 'dir': 'build$\|node_modules$' }
+
+"js doc highlighting
+let g:javascript_plugin_jsdoc = 1
+
 
 " Remove preview window"
 set completeopt-=preview
@@ -65,3 +79,4 @@ map <F2> :MRU<CR>
 "Control O to toggle nerd tree in the buffer's folder
 map <C-o> :NERDTreeToggle %<CR>
 
+let g:move_key_modifier = 'C'

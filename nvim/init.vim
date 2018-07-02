@@ -20,6 +20,11 @@ Plug 'yegappan/mru',
 
 Plug 'posva/vim-vue'
 
+Plug 'prettier/vim-prettier', {
+  \ 'do': 'npm install --global prettier',
+  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue'] }
+
+
 call plug#end()
 
 autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | wincmd p | endif
@@ -60,5 +65,3 @@ map <F2> :MRU<CR>
 "Control O to toggle nerd tree in the buffer's folder
 map <C-o> :NERDTreeToggle %<CR>
 
-"js beautify on ,bb "
-nnoremap <leader>bb :%!js-beautify -j -q -B -f -<CR>

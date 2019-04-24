@@ -1,41 +1,56 @@
 call plug#begin('~/.local/share/nvim/plugged')
 
+" find file with ctrl P
 Plug  'ctrlpvim/ctrlp.vim'
 
+" move selection vertically => ctrl J - ctrl L
 Plug 'matze/vim-move'
 
+" async things
 Plug 'neomake/neomake'
 
+" leader - f f to search in the whole project 
 Plug 'eugen0329/vim-esearch'
-"Type <leader>ff and insert a search pattern (usually <leader> is \). Use s, v and t buttons to open file under the cursor in split, vertical split and in tab accordingly. Use Shift along with s, v and t buttons to open a file silently. Press Shift-r to reload currrent results.
-"To switch between case-sensitive/insensitive, whole-word-match and regex/literal pattern in command line use Ctrl-oCtrl-r, Ctrl-oCtrl-s or Ctrl-oCtrl-w (mnemonics is set Option: Regex, case Sesnsitive, Word regex).
 
+" ctrl N to multiple cursor (then visual mode => C to replace words) 
 Plug 'terryma/vim-multiple-cursors'
 
+" nerdTree classic (tab to toogle, leader-N : reveal current buffer in it)
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 
+" Auto complete, with ternjs
 Plug 'Valloric/YouCompleteMe', { 'do': './install.py --tern-completer' }
 
+" last used files (f2)
 Plug 'yegappan/mru',
 
+" vue highlights
 Plug 'posva/vim-vue'
 
+" es6 higlight
 Plug 'isRuslan/vim-es6'
 
+" advanced js
 Plug 'pangloss/vim-javascript'
 
+" linter eslint (customo eslint fix with ctrl B) 
 Plug 'w0rp/ale'
 
+" prettier : leader-P
 Plug 'prettier/vim-prettier', {
   \ 'do': 'npm install --global prettier',
   \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue'] }
 
+" Show git info in the gutter (CTRL L to toogle)
 Plug 'airblade/vim-gitgutter'
 
 " Show infos about current file... etc => bottom bar 
 Plug 'itchyny/lightline.vim'
 " Show the current git branch in it
 Plug 'itchyny/vim-gitbranch'
+
+" color theme
+Plug 'ntk148v/vim-horizon'
 
 call plug#end()
 
@@ -109,8 +124,13 @@ let g:lightline = {
 let mapleader = ","                                             
 let g:mapleader = ","                                                                   
 
+colorscheme horizon
+
 " reload files modified outside of vim 
 set autoread
+" call file reloading on buf focus change
+au FocusGained,BufEnter * :checktime
+
 
 " Remove preview window"
 set completeopt-=preview
@@ -118,8 +138,13 @@ set completeopt-=preview
 " Show line numbers "
 set number
 
-"CtrL to toogle line numbers
-noremap <C-L> :set invnumber<CR>
+"CtrL to toogle line numbers and git info
+function ToggleGutter()
+	:set invnumber
+	:GitGutterToggle
+endfunction
+
+noremap <C-L> :call ToggleGutter()<CR>
 
 "Line wrap keeping identation"
 set breakindent

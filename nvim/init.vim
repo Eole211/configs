@@ -41,7 +41,7 @@ Plug 'prettier/vim-prettier', {
   \ 'do': 'npm install --global prettier',
   \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue'] }
 
-" Show git info in the gutter (CTRL L to toogle)
+" Show git info in the gutter (Leader-T to toogle)
 Plug 'airblade/vim-gitgutter'
 
 " Show infos about current file... etc => bottom bar 
@@ -51,6 +51,9 @@ Plug 'itchyny/vim-gitbranch'
 
 " color theme
 Plug 'ntk148v/vim-horizon'
+
+" 
+Plug 'heavenshell/vim-jsdoc'
 
 call plug#end()
 
@@ -89,6 +92,9 @@ let g:ale_completion_enabled = 1
 " let g:ale_fix_on_save = 1
 "nmap <leader>d <Plug>(ale_fix)
 
+" better prettier base config
+let g:prettier#config#tab_width = 4
+
 " ---- JS part -----
 function ESLintFix()
   write
@@ -103,6 +109,12 @@ let g:ctrlp_custom_ignore = { 'dir': 'build$\|node_modules$' }
 
 "js doc highlighting
 let g:javascript_plugin_jsdoc = 1
+
+" Js doc es6
+let g:jsdoc_enable_es6 = 1
+
+" JS doc generation with Ctrl-L" 
+nmap <silent> <C-l> <Plug>(jsdoc)
 
 " ---- END JS Part
 
@@ -138,13 +150,19 @@ set completeopt-=preview
 " Show line numbers "
 set number
 
-"CtrL to toogle line numbers and git info
+"Leader-T to toogle line numbers and git info
 function ToggleGutter()
 	:set invnumber
 	:GitGutterToggle
 endfunction
 
-noremap <C-L> :call ToggleGutter()<CR>
+noremap <leader>t :call ToggleGutter()<CR>
+
+" Remove highlight on echap
+nnoremap <esc> :noh<return><esc>
+
+" highlight when searching
+:set hlsearch
 
 "Line wrap keeping identation"
 set breakindent

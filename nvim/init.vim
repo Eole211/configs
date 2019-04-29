@@ -19,7 +19,17 @@ Plug 'terryma/vim-multiple-cursors'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 
 " Auto complete, with ternjs
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py --tern-completer' }
+" Plug 'Valloric/YouCompleteMe', { 'do': './install.py --tern-completer' }
+
+if has('nvim')
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+else
+  Plug 'Shougo/deoplete.nvim'
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
+endif
+
+Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
 
 " last used files (f2)
 Plug 'yegappan/mru',
@@ -57,6 +67,10 @@ Plug 'heavenshell/vim-jsdoc'
 
 call plug#end()
 
+let g:deoplete#enable_at_startup = 1
+let g:python3_host_prog='C:/Python37/python.exe'
+let g:python_host_prog='C:/Python27/python.exe' 
+
 "--------NERDTREE Section--------------
 autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | wincmd p | endif
 
@@ -83,7 +97,7 @@ nmap ,n :NERDTreeFind<CR>
 "-------End NERDTREE Section -------------
 
 "YouCompleteMe Go to declaration or definition shotcut"
-nnoremap <leader>gd :YcmCompleter GoToDefinitionElseDeclaration<CR>
+" nnoremap <leader>gd :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
 " --- LINTER ------
 let g:ale_linters = {'javascript': ['eslint']}

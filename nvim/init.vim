@@ -19,7 +19,18 @@ Plug 'terryma/vim-multiple-cursors'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 
 " Auto complete, with ternjs
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py --tern-completer' }
+" nice doc :  http://gregjs.com/vim/2016/neovim-deoplete-jspc-ultisnips-and-tern-a-config-for-kickass-autocompletion/
+if has('nvim')
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+else
+  Plug 'Shougo/deoplete.nvim'
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
+endif
+
+Plug 'ervandew/supertab'
+
+Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern', 'for': ['javascript', 'javascript.jsx'] }
 
 " last used files (f2)
 Plug 'yegappan/mru',
@@ -52,10 +63,14 @@ Plug 'itchyny/vim-gitbranch'
 " color theme
 Plug 'ntk148v/vim-horizon'
 
-" 
+" jsdoc 
 Plug 'heavenshell/vim-jsdoc'
 
 call plug#end()
+
+let g:deoplete#enable_at_startup = 1
+" let g:python3_host_prog='C:/Python37/python.exe'
+" let g:python_host_prog='C:/Python27/python.exe' 
 
 "--------NERDTREE Section--------------
 autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | wincmd p | endif
@@ -73,17 +88,13 @@ let NERDTreeShowHidden=1
 " Let quit work as expected if after entering :q the only window left open is NERD Tree itself
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
-"Control O to toggle nerd tree in the buffer's folder
-map <silent> <C-i> :NERDTreeToggle<CR>
-map <silent> <C-o> :NERDTreeFocus<CR>
-
-" Reveal current buffer in nerdtree
+" leader + n:  Reveal current buffer in nerdtree
 nmap ,n :NERDTreeFind<CR>
 
+" ctrl I or tab to toogle nerdTree
+map <silent> <C-i> :NERDTreeToggle<CR>
 "-------End NERDTREE Section -------------
 
-"YouCompleteMe Go to declaration or definition shotcut"
-nnoremap <leader>gd :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
 " --- LINTER ------
 let g:ale_linters = {'javascript': ['eslint']}
@@ -104,7 +115,7 @@ function ESLintFix()
 endfunction
 nmap <silent> <C-B> :call ESLintFix()<CR>
 
-" ignore node modules
+" ignore node modules for ctrl p
 let g:ctrlp_custom_ignore = { 'dir': 'build$\|node_modules$' }
 
 "js doc highlighting
@@ -117,6 +128,12 @@ let g:jsdoc_enable_es6 = 1
 nmap <silent> <C-l> <Plug>(jsdoc)
 
 " ---- END JS Part
+
+" super tab (tab for decomplete)
+autocmd FileType javascript let g:SuperTabDefaultCompletionType = "<c-x><c-o>"
+let g:UltiSnipsExpandTrigger="<C-j>"
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+
 
 " Bottom line : 
 " display branch name
@@ -145,17 +162,23 @@ au FocusGained,BufEnter * :checktime
 
 
 " Remove preview window"
-set completeopt-=preview
+" set completeopt-=preview
+let g:SuperTabClosePreviewOnPopupClose = 1
 
 " Show line numbers "
 set number
 
-"Leader-T to toogle line numbers and git info
+"Leader-T to toogle line numbers and gutter signs
 function ToggleGutter()
+	if &scl == "no"
+	    echom "auto"
+	    :set scl=auto
+    else 
+        echom "no"
+        :set scl=no
+    endif
 	:set invnumber
-	:GitGutterToggle
 endfunction
-
 noremap <leader>t :call ToggleGutter()<CR>
 
 " Remove highlight on echap

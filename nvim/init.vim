@@ -95,7 +95,6 @@ nmap ,n :NERDTreeFind<CR>
 map <silent> <C-i> :NERDTreeToggle<CR>
 "-------End NERDTREE Section -------------
 
-
 " --- LINTER ------
 let g:ale_linters = {'javascript': ['eslint']}
 " let g:ale_fixers = {'javascript': ['eslint']}
@@ -171,10 +170,10 @@ set number
 "Leader-T to toogle line numbers and gutter signs
 function ToggleGutter()
 	if &scl == "no"
-	    echom "auto"
+	    echom "scl to auto"
 	    :set scl=auto
     else 
-        echom "no"
+        echom "scl to no"
         :set scl=no
     endif
 	:set invnumber

@@ -186,8 +186,12 @@ nnoremap <esc> :noh<return><esc>
 " highlight when searching
 :set hlsearch
 
-"Line wrap keeping identation"
+" Indents word-wrapped lines as much as the 'parent' line
 set breakindent
+" Ensures word-wrap does not split words
+set formatoptions=l
+set lbr
+
 
 " Spaces & Tabs {{{
 set tabstop=4       " number of visual spaces per TAB

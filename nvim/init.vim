@@ -28,9 +28,16 @@ else
   Plug 'roxma/vim-hug-neovim-rpc'
 endif
 
+
 Plug 'ervandew/supertab'
 
 Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern', 'for': ['javascript', 'javascript.jsx'] }
+
+Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
+
+"Typescript Plugins
+Plug 'HerringtonDarkholme/yats.vim'
+Plug 'mhartington/nvim-typescript', {'do': './install.sh'}
 
 " last used files (f2)
 Plug 'yegappan/mru',
@@ -44,7 +51,7 @@ Plug 'isRuslan/vim-es6'
 " advanced js
 Plug 'pangloss/vim-javascript'
 
-" linter eslint (customo eslint fix with ctrl B) 
+" linter eslint, fix current file with leader-f
 Plug 'w0rp/ale'
 
 " prettier : leader-P
@@ -52,7 +59,7 @@ Plug 'prettier/vim-prettier', {
   \ 'do': 'npm install --global prettier',
   \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue'] }
 
-" Show git info in the gutter (Leader-T to toogle)
+" Show git info in the gutter (Leader-G to toogle)
 Plug 'airblade/vim-gitgutter'
 
 " Show infos about current file... etc => bottom bar 
@@ -66,9 +73,29 @@ Plug 'ntk148v/vim-horizon'
 " jsdoc 
 Plug 'heavenshell/vim-jsdoc'
 
+" markdown preview
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
+
 call plug#end()
 
 let g:deoplete#enable_at_startup = 1
+let g:deoplete#enable_ignore_case = 1
+let g:deoplete#enable_smart_case = 1
+let g:deoplete#enable_camel_case = 1
+let g:deoplete#enable_refresh_always = 1
+let g:deoplete#max_abbr_width = 0
+" let g:deoplete#max_menu_width = 0
+let g:deoplete#omni#input_patterns = get(g:,'deoplete#omni#input_patterns',{})
+" call deoplete#custom#set('_', 'matchers', ['matcher_full_fuzzy'])
+
+let g:tern_request_timeout = 1
+let g:tern_request_timeout = 6000
+let g:tern#command = ["tern"]
+let g:tern#arguments = ["--persistent"]
+let g:deoplete#sources#tss#javascript_support = 1
+let g:nvim_typescript#javascript_support = 1
+
+
 " let g:python3_host_prog='C:/Python37/python.exe'
 " let g:python_host_prog='C:/Python27/python.exe' 
 
@@ -91,28 +118,19 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 " leader + n:  Reveal current buffer in nerdtree
 nmap ,n :NERDTreeFind<CR>
 
-" ctrl I or tab to toogle nerdTree
-map <silent> <C-i> :NERDTreeToggle<CR>
 "-------End NERDTREE Section -------------
 
 " --- LINTER ------
 let g:ale_linters = {'javascript': ['eslint']}
-" let g:ale_fixers = {'javascript': ['eslint']}
+let g:ale_fixers = {'javascript': ['eslint']}
 let g:ale_completion_enabled = 1
 " let g:ale_fix_on_save = 1
-"nmap <leader>d <Plug>(ale_fix)
+nmap ,f <Plug>(ale_fix)
 
 " better prettier base config
 let g:prettier#config#tab_width = 4
 
 " ---- JS part -----
-function ESLintFix()
-  write
-  silent execute "!./node_modules/.bin/eslint --fix %"
-  edit! %
-  redraw!
-endfunction
-nmap <silent> <C-B> :call ESLintFix()<CR>
 
 " ignore node modules for ctrl p
 let g:ctrlp_custom_ignore = { 'dir': 'build$\|node_modules$' }
@@ -123,8 +141,12 @@ let g:javascript_plugin_jsdoc = 1
 " Js doc es6
 let g:jsdoc_enable_es6 = 1
 
-" JS doc generation with Ctrl-L" 
-nmap <silent> <C-l> <Plug>(jsdoc)
+" JS doc generation with Leader D" 
+nmap ,d <Plug>(jsdoc)
+
+" Tern Def on F12
+autocmd FileType javascript map <F12> :TernDef<CR>
+autocmd FileType javascript map <leader><F12> :TernDefPreview<CR>
 
 " ---- END JS Part
 
@@ -167,7 +189,7 @@ let g:SuperTabClosePreviewOnPopupClose = 1
 " Show line numbers "
 set number
 
-"Leader-T to toogle line numbers and gutter signs
+"Leader-G to toogle gutter
 function ToggleGutter()
 	if &scl == "no"
 	    echom "scl to auto"
@@ -178,7 +200,7 @@ function ToggleGutter()
     endif
 	:set invnumber
 endfunction
-noremap <leader>t :call ToggleGutter()<CR>
+noremap <leader>g :call ToggleGutter()<CR>
 
 " Remove highlight on echap
 nnoremap <esc> :noh<return><esc>

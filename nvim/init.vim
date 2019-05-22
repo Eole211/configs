@@ -175,6 +175,15 @@ let g:lightline = {
       \ },
       \ }
 
+" Remove preview window"
+" set completeopt-=preview
+let g:SuperTabClosePreviewOnPopupClose = 1
+
+"F2 Shortcut for Most Recently Used Files
+map <F2> :MRU<CR>
+
+"Move line or selection vertically with Ctrl J and Ctrl K"
+let g:move_key_modifier = 'C'
 
 "map leader"
 let mapleader = ","                                             
@@ -188,9 +197,6 @@ set autoread
 au FocusGained,BufEnter * :checktime
 
 
-" Remove preview window"
-" set completeopt-=preview
-let g:SuperTabClosePreviewOnPopupClose = 1
 
 " Show line numbers "
 set number
@@ -234,10 +240,13 @@ set autoindent
 set copyindent      " copy indent from the previous line
 " }}} Spaces & Tabs
 
+" auto close things
+inoremap " ""<left>
+inoremap ' ''<left>
+inoremap ( ()<left>
+inoremap [ []<left>
+inoremap { {}<left>
+inoremap {<CR> {<CR>}<ESC>O
+inoremap {;<CR> {<CR>};<ESC>O
 
-"F2 Shortcut for Most Recently Used Files
-map <F2> :MRU<CR>
-
-"Move line or selection vertically with Ctrl J and Ctrl K"
-let g:move_key_modifier = 'C'
 

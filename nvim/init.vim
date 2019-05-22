@@ -76,6 +76,9 @@ Plug 'heavenshell/vim-jsdoc'
 " markdown preview
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
 
+" Git plugin 
+Plug 'tpope/vim-fugitive'
+
 call plug#end()
 
 let g:deoplete#enable_at_startup = 1
@@ -114,6 +117,9 @@ let NERDTreeShowHidden=1
 
 " Let quit work as expected if after entering :q the only window left open is NERD Tree itself
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+"Control O to toggle nerd tree in the buffer's folder
+map <silent> <C-i> :NERDTreeToggle<CR>
+map <silent> <C-o> :NERDTreeFocus<CR>
 
 " leader + n:  Reveal current buffer in nerdtree
 nmap ,n :NERDTreeFind<CR>
@@ -201,6 +207,10 @@ function ToggleGutter()
 	:set invnumber
 endfunction
 noremap <leader>g :call ToggleGutter()<CR>
+
+" git gutter no support fot focus gained
+let g:gitgutter_terminal_reports_focus=0
+set updatetime=750
 
 " Remove highlight on echap
 nnoremap <esc> :noh<return><esc>

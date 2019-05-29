@@ -79,6 +79,9 @@ Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
 " Git plugin 
 Plug 'tpope/vim-fugitive'
 
+" Auto close things
+Plug 'Raimondi/delimitMate'
+
 call plug#end()
 
 let g:deoplete#enable_at_startup = 1
@@ -127,8 +130,15 @@ nmap ,n :NERDTreeFind<CR>
 "-------End NERDTREE Section -------------
 
 " --- LINTER ------
-let g:ale_linters = {'javascript': ['eslint']}
-let g:ale_fixers = {'javascript': ['eslint']}
+" "let g:ale_linter_aliases = {'vue': ['vue', 'javascript']}
+let g:ale_linters = {
+            \'javascript': ['eslint'],
+            \'vue': ['eslint'],
+            \}
+let g:ale_fixers = {
+            \'javascript': ['eslint'],
+            \'vue': ['eslint'],
+            \}
 let g:ale_completion_enabled = 1
 " let g:ale_fix_on_save = 1
 nmap ,f <Plug>(ale_fix)
@@ -241,12 +251,12 @@ set copyindent      " copy indent from the previous line
 " }}} Spaces & Tabs
 
 " auto close things
-inoremap " ""<left>
-inoremap ' ''<left>
-inoremap ( ()<left>
-inoremap [ []<left>
-inoremap { {}<left>
-inoremap {<CR> {<CR>}<ESC>O
-inoremap {;<CR> {<CR>};<ESC>O
+""inoremap " ""<left>
+"inoremap ' ''<left>
+"inoremap ( ()<left>
+"inoremap [ []<left>
+"inoremap { {}<left>
+"inoremap {<CR> {<CR>}<ESC>O
+"inoremap {;<CR> {<CR>};<ESC>O
 
 

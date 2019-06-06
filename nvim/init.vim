@@ -240,6 +240,8 @@ set breakindent
 set formatoptions=l
 set lbr
 
+" folding
+:set foldmethod=indent
 
 " Spaces & Tabs {{{
 set tabstop=4       " number of visual spaces per TAB

@@ -242,6 +242,7 @@ set lbr
 
 " folding
 :set foldmethod=indent
+:set foldlevelstart=1
 
 " Spaces & Tabs {{{
 set tabstop=4       " number of visual spaces per TAB

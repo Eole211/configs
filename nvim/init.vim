@@ -18,8 +18,31 @@ Plug 'terryma/vim-multiple-cursors'
 " nerdTree classic (tab to toogle, leader-N : reveal current buffer in it)
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 
-" Auto complete, with ternjs
-" nice doc :  http://gregjs.com/vim/2016/neovim-deoplete-jspc-ultisnips-and-tern-a-config-for-kickass-autocompletion/
+" auto format
+Plug 'sbdchd/neoformat'
+
+" Show git info in the gutter (Leader-G to toogle)
+Plug 'airblade/vim-gitgutter'
+
+" last used files (f2)
+Plug 'yegappan/mru',
+
+" Show infos about current file... etc => bottom bar 
+Plug 'itchyny/lightline.vim'
+
+" color theme
+Plug 'ntk148v/vim-horizon'
+
+" Auto close things
+Plug 'Raimondi/delimitMate'
+
+" Color picker
+Plug 'KabbAmine/vCoolor.vim'
+
+" Commenter ( <leader>cc to comment)
+Plug 'scrooloose/nerdcommenter'
+
+" Completion
 if has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 else
@@ -28,28 +51,59 @@ else
   Plug 'roxma/vim-hug-neovim-rpc'
 endif
 
+" completion doc shwon in command line
+Plug 'Shougo/echodoc.vim'
 
+" tab use for completion
 Plug 'ervandew/supertab'
 
-Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern', 'for': ['javascript', 'javascript.jsx'] }
+" markdown preview
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
 
+" ------GIT PLUGINS
+"
+" Git plugin 
+Plug 'tpope/vim-fugitive'
+
+" Show the current git branch in it
+Plug 'itchyny/vim-gitbranch'
+
+" ------PYTHON PLUGINS ------
+
+" deoplete python
+Plug 'zchee/deoplete-jedi'
+
+" python linter
+Plug 'nvie/vim-flake8', { 'do': 'pip3 install flake8'}
+
+" ---- JS PLUGINS ---------
+
+" Auto complete, with ternjs
+" nice doc :  http://gregjs.com/vim/2016/neovim-deoplete-jspc-ultisnips-and-tern-a-config-for-kickass-autocompletion/
+Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern', 'for': ['javascript', 'javascript.jsx', '.vue', 'vuejs'] }
 Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
 
 "Typescript Plugins
 Plug 'HerringtonDarkholme/yats.vim'
 Plug 'mhartington/nvim-typescript', {'do': './install.sh'}
 
-" last used files (f2)
-Plug 'yegappan/mru',
 
 " vue highlights
 Plug 'posva/vim-vue'
+
+Plug 'Quramy/tsuquyomi'
+
+Plug 'Quramy/tsuquyomi-vue', {'do': 'npm install -g vue-ts-plugin'}
+
 
 " es6 higlight
 Plug 'isRuslan/vim-es6'
 
 " advanced js
 Plug 'pangloss/vim-javascript'
+
+" jsdoc 
+Plug 'heavenshell/vim-jsdoc'
 
 " linter eslint, fix current file with leader-f
 Plug 'w0rp/ale'
@@ -59,28 +113,9 @@ Plug 'prettier/vim-prettier', {
   \ 'do': 'npm install --global prettier',
   \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue'] }
 
-" Show git info in the gutter (Leader-G to toogle)
-Plug 'airblade/vim-gitgutter'
 
-" Show infos about current file... etc => bottom bar 
-Plug 'itchyny/lightline.vim'
-" Show the current git branch in it
-Plug 'itchyny/vim-gitbranch'
-
-" color theme
-Plug 'ntk148v/vim-horizon'
-
-" jsdoc 
-Plug 'heavenshell/vim-jsdoc'
-
-" markdown preview
-Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
-
-" Git plugin 
-Plug 'tpope/vim-fugitive'
-
-" Auto close things
-Plug 'Raimondi/delimitMate'
+" Tabs in buffers
+" Plug 'ap/vim-buftabline'
 
 call plug#end()
 
@@ -98,9 +133,17 @@ let g:tern_request_timeout = 1
 let g:tern_request_timeout = 6000
 let g:tern#command = ["tern"]
 let g:tern#arguments = ["--persistent"]
+let g:tern#filetypes = [ 'js', 'vue' ]
 let g:deoplete#sources#tss#javascript_support = 1
+let g:deoplete#sources#tss#vue_support = 1
 let g:nvim_typescript#javascript_support = 1
 
+let g:echodoc#enable_at_startup = 1
+let g:echodoc#type = 'virtual'
+
+" let g:nvim_typescript#vue_support = 1
+
+autocmd BufNewFile,BufRead *.vue set filetype=vue
 
 " let g:python3_host_prog='C:/Python37/python.exe'
 " let g:python_host_prog='C:/Python27/python.exe' 
@@ -133,12 +176,16 @@ nmap ,n :NERDTreeFind<CR>
 " "let g:ale_linter_aliases = {'vue': ['vue', 'javascript']}
 let g:ale_linters = {
             \'javascript': ['eslint'],
-            \'vue': ['eslint'],
+            \'vue': ['eslint', 'stylelint'],
+            \'less': ['stylelint'],
             \}
 let g:ale_fixers = {
             \'javascript': ['eslint'],
-            \'vue': ['eslint'],
+            \'vue': ['eslint','stylelint'],
+            \'less': ['stylelint'],
             \}
+let g:ale_linter_aliases = { 'vue': ['less','javascript']}
+let g:ale_fixer_aliases = { 'vue': ['less','javascript']}
 let g:ale_completion_enabled = 1
 " let g:ale_fix_on_save = 1
 nmap ,f <Plug>(ale_fix)
@@ -187,7 +234,12 @@ let g:lightline = {
 
 " Remove preview window"
 " set completeopt-=preview
-let g:SuperTabClosePreviewOnPopupClose = 1
+" let g:SuperTabClosePreviewOnPopupClose = 1
+
+" hide classic tabs
+" set hidden
+" nnoremap gt :bnext<CR>
+" nnoremap gT :bprev<CR>
 
 "F2 Shortcut for Most Recently Used Files
 map <F2> :MRU<CR>
@@ -206,7 +258,8 @@ set autoread
 " call file reloading on buf focus change
 au FocusGained,BufEnter * :checktime
 
-
+" search for selection when typing //
+vnoremap // y/\V<C-r>=escape(@",'/\')<CR><CR>
 
 " Show line numbers "
 set number
@@ -227,6 +280,9 @@ noremap <leader>g :call ToggleGutter()<CR>
 " git gutter no support fot focus gained
 let g:gitgutter_terminal_reports_focus=0
 set updatetime=750
+
+" duplicate selection with alt D
+vmap <M-d> y'>p
 
 " Remove highlight on echap
 nnoremap <esc> :noh<return><esc>
@@ -249,7 +305,7 @@ set tabstop=4       " number of visual spaces per TAB
 set softtabstop=4   " number of spaces in tab when editing
 set shiftwidth=4    " number of spaces to use for autoindent
 set expandtab       " tabs are space
-set autoindent
+set smartindent
 set copyindent      " copy indent from the previous line
 " }}} Spaces & Tabs
 

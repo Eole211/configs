@@ -300,6 +300,10 @@ set lbr
 :set foldmethod=indent
 :set foldlevelstart=1
 
+" smart case when doing search in a file
+:set ignorecase
+:set smartcase
+
 " Spaces & Tabs {{{
 set tabstop=4       " number of visual spaces per TAB
 set softtabstop=4   " number of spaces in tab when editing
@@ -309,13 +313,5 @@ set smartindent
 set copyindent      " copy indent from the previous line
 " }}} Spaces & Tabs
 
-" auto close things
-""inoremap " ""<left>
-"inoremap ' ''<left>
-"inoremap ( ()<left>
-"inoremap [ []<left>
-"inoremap { {}<left>
-"inoremap {<CR> {<CR>}<ESC>O
-"inoremap {;<CR> {<CR>};<ESC>O
 
 

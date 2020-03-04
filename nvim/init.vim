@@ -1,4 +1,4 @@
-call plug#begin('~/.local/share/nvim/plugged')
+call plug#begin('/opt/nvim/plugged')
 
 " find file with ctrl P
 Plug  'ctrlpvim/ctrlp.vim'

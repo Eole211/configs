@@ -1,5 +1,5 @@
-call plug#begin('/opt/nvim/plugged')
 
+call plug#begin('/opt/nvim/plugged')
 " find file with ctrl P
 Plug  'ctrlpvim/ctrlp.vim'
 
@@ -73,17 +73,8 @@ Plug 'nvie/vim-flake8', { 'do': 'pip3 install flake8'}
 " nice doc :  http://gregjs.com/vim/2016/neovim-deoplete-jspc-ultisnips-and-tern-a-config-for-kickass-autocompletion/
 Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
 
-"Typescript Plugins
-Plug 'HerringtonDarkholme/yats.vim'
-Plug 'mhartington/nvim-typescript', {'do': './install.sh'}
-
-
 " vue highlights
 Plug 'posva/vim-vue'
-
-Plug 'Quramy/tsuquyomi'
-
-Plug 'Quramy/tsuquyomi-vue', {'do': 'npm install -g vue-ts-plugin'}
 
 
 " es6 higlight
@@ -124,7 +115,7 @@ set nobackup
 set nowritebackup
 
 " Give more space for displaying messages.
-set cmdheight=2
+set cmdheight=1
 
 " Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
 " delays and poor user experience.
@@ -169,22 +160,18 @@ nmap <silent> gr <Plug>(coc-references)
 " Symbol renaming.
 nmap ,m <Plug>(coc-rename)
 
-" Add (Neo)Vim's native statusline support.
-" NOTE: Please see `:h coc-status` for integrations with external plugins that
-" provide custom statusline: lightline.vim, vim-airline.
-set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+" Update signature help on jump placeholder.
+autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 
+" light-line
+autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
 
+" tern things
 let g:tern_request_timeout = 1
 let g:tern_request_timeout = 6000
 let g:tern#command = ["tern"]
 let g:tern#arguments = ["--persistent"]
 let g:tern#filetypes = [ 'js', 'vue' ]
-
-let g:echodoc#enable_at_startup = 1
-let g:echodoc#type = 'virtual'
-
-autocmd BufNewFile,BufRead *.vue set filetype=vue
 
 " let g:python3_host_prog='C:/Python37/python.exe'
 " let g:python_host_prog='C:/Python27/python.exe' 
@@ -260,21 +247,14 @@ let g:lightline = {
       \ 'colorscheme': 'wombat',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
+      \             [ 'cocstatus', 'gitbranch', 'readonly', 'filename', 'modified' ] ]
       \ },
       \ 'component_function': {
-      \   'gitbranch': 'gitbranch#name'
+      \   'gitbranch': 'gitbranch#name',
+      \   'cocstatus': 'coc#status'
       \ },
       \ }
 
-" Remove preview window"
-" set completeopt-=preview
-" let g:SuperTabClosePreviewOnPopupClose = 1
-
-" hide classic tabs
-" set hidden
-" nnoremap gt :bnext<CR>
-" nnoremap gT :bprev<CR>
 
 "F2 Shortcut for Most Recently Used Files
 map <F2> :MRU<CR>

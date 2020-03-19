@@ -42,20 +42,13 @@ Plug 'KabbAmine/vCoolor.vim'
 " Commenter ( <leader>cc to comment)
 Plug 'scrooloose/nerdcommenter'
 
-" Completion
-if has('nvim')
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-else
-  Plug 'Shougo/deoplete.nvim'
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
-endif
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " completion doc shwon in command line
-Plug 'Shougo/echodoc.vim'
+" Plug 'Shougo/echodoc.vim'
 
 " tab use for completion
-Plug 'ervandew/supertab'
+" Plug 'ervandew/supertab'
 
 " markdown preview
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
@@ -70,8 +63,6 @@ Plug 'itchyny/vim-gitbranch'
 
 " ------PYTHON PLUGINS ------
 
-" deoplete python
-Plug 'zchee/deoplete-jedi'
 
 " python linter
 Plug 'nvie/vim-flake8', { 'do': 'pip3 install flake8'}
@@ -80,7 +71,6 @@ Plug 'nvie/vim-flake8', { 'do': 'pip3 install flake8'}
 
 " Auto complete, with ternjs
 " nice doc :  http://gregjs.com/vim/2016/neovim-deoplete-jspc-ultisnips-and-tern-a-config-for-kickass-autocompletion/
-Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern', 'for': ['javascript', 'javascript.jsx', '.vue', 'vuejs'] }
 Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
 
 "Typescript Plugins
@@ -108,6 +98,11 @@ Plug 'heavenshell/vim-jsdoc'
 " linter eslint, fix current file with leader-f
 Plug 'w0rp/ale'
 
+" -- PHP PLUGINS---
+"
+" symfony - twig
+Plug 'nelsyeung/twig.vim'
+
 " prettier : leader-P
 Plug 'prettier/vim-prettier', {
   \ 'do': 'npm install --global prettier',
@@ -119,29 +114,75 @@ Plug 'prettier/vim-prettier', {
 
 call plug#end()
 
-let g:deoplete#enable_at_startup = 1
-let g:deoplete#enable_ignore_case = 1
-let g:deoplete#enable_smart_case = 1
-let g:deoplete#enable_camel_case = 1
-let g:deoplete#enable_refresh_always = 1
-let g:deoplete#max_abbr_width = 0
-" let g:deoplete#max_menu_width = 0
-let g:deoplete#omni#input_patterns = get(g:,'deoplete#omni#input_patterns',{})
-" call deoplete#custom#set('_', 'matchers', ['matcher_full_fuzzy'])
+
+" -----  CONFIG FOR COC
+" TextEdit might fail if hidden is not set.
+set hidden
+
+" Some servers have issues with backup files, see #649.
+set nobackup
+set nowritebackup
+
+" Give more space for displaying messages.
+set cmdheight=2
+
+" Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
+" delays and poor user experience.
+set updatetime=300
+
+" Don't pass messages to |ins-completion-menu|.
+set shortmess+=c
+
+" Use K to show documentation in preview window.
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+    call CocAction('doHover')
+endfunction
+
+
+" Use tab for trigger completion with characters ahead and navigate.
+" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+" other plugin before putting this into your config.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <c-space> to trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
+" Highlight the symbol and its references when holding the cursor.
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" GoTo code navigation.
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Symbol renaming.
+nmap ,m <Plug>(coc-rename)
+
+" Add (Neo)Vim's native statusline support.
+" NOTE: Please see `:h coc-status` for integrations with external plugins that
+" provide custom statusline: lightline.vim, vim-airline.
+set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+
 
 let g:tern_request_timeout = 1
 let g:tern_request_timeout = 6000
 let g:tern#command = ["tern"]
 let g:tern#arguments = ["--persistent"]
 let g:tern#filetypes = [ 'js', 'vue' ]
-let g:deoplete#sources#tss#javascript_support = 1
-let g:deoplete#sources#tss#vue_support = 1
-let g:nvim_typescript#javascript_support = 1
 
 let g:echodoc#enable_at_startup = 1
 let g:echodoc#type = 'virtual'
-
-" let g:nvim_typescript#vue_support = 1
 
 autocmd BufNewFile,BufRead *.vue set filetype=vue
 
@@ -213,12 +254,6 @@ autocmd FileType javascript map <leader><F12> :TernDefPreview<CR>
 
 " ---- END JS Part
 
-" super tab (tab for decomplete)
-autocmd FileType javascript let g:SuperTabDefaultCompletionType = "<c-x><c-o>"
-let g:UltiSnipsExpandTrigger="<C-j>"
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-
-
 " Bottom line : 
 " display branch name
 let g:lightline = {
@@ -279,7 +314,6 @@ noremap <leader>g :call ToggleGutter()<CR>
 
 " git gutter no support fot focus gained
 let g:gitgutter_terminal_reports_focus=0
-set updatetime=750
 
 " duplicate selection with alt D
 vmap <M-d> y'>p

@@ -176,6 +176,9 @@ let g:tern#filetypes = [ 'js', 'vue' ]
 " let g:python3_host_prog='C:/Python37/python.exe'
 " let g:python_host_prog='C:/Python27/python.exe' 
 
+" NERD Commenter : Add spaces after comment delimiters by default
+let g:NERDSpaceDelims = 1
+
 "--------NERDTREE Section--------------
 autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | wincmd p | endif
 

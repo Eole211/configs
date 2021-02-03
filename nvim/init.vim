@@ -1,5 +1,5 @@
-
 call plug#begin('/opt/nvim/plugged')
+
 " find file with ctrl P
 Plug  'ctrlpvim/ctrlp.vim'
 
@@ -8,9 +8,6 @@ Plug 'matze/vim-move'
 
 " async things
 Plug 'neomake/neomake'
-
-" leader - f f to search in the whole project 
-Plug 'eugen0329/vim-esearch'
 
 " ctrl N to multiple cursor (then visual mode => C to replace words) 
 Plug 'terryma/vim-multiple-cursors'
@@ -43,6 +40,11 @@ Plug 'KabbAmine/vCoolor.vim'
 Plug 'scrooloose/nerdcommenter'
 
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+
+Plug 'wincent/ferret'
 
 " completion doc shwon in command line
 " Plug 'Shougo/echodoc.vim'
@@ -203,6 +205,11 @@ nmap ,n :NERDTreeFind<CR>
 
 "-------End NERDTREE Section -------------
 
+" -- research in Files, disable preview because it doesn't work (on windows)
+"  INSTALL ag for search
+let g:fzf_preview_window = ''
+
+
 " --- LINTER ------
 " "let g:ale_linter_aliases = {'vue': ['vue', 'javascript']}
 let g:ale_linters = {
@@ -330,5 +337,7 @@ set smartindent
 set copyindent      " copy indent from the previous line
 " }}} Spaces & Tabs
 
+" copy paste on windows
+set clipboard^=unnamed,unnamedplus
 
 

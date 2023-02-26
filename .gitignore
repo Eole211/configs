@@ -6,5 +6,6 @@
 !/terminator/
 !/omf/
 !/fish/
+!merge-config-folder.sh
 !.gitignore_global
 !.kglobalshortcutsrc
